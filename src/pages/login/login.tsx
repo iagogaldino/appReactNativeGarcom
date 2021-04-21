@@ -75,14 +75,14 @@ export default function Login() {
 
         <View style={styles.vi}>
           <TextInput
-            placeholderTextColor="white"
+            placeholderTextColor="black"
             style={styles.input}
             placeholder={"Email"}
           />
         </View>
         <View style={styles.vi}>
           <TextInput
-            placeholderTextColor="white"
+            placeholderTextColor="black"
             style={styles.input}
             placeholder={"Senha"}
           />
@@ -100,14 +100,11 @@ export default function Login() {
 
       <TouchableOpacity style={styles.button2}>
         <Text
-          style={{ color: "white", fontSize: 12 }}
+          style={{ color: "black", fontSize: 12 }}
           onPress={() => {
             navigation.navigate("Cadastro de empresa", navigation);
           }}
-        >
-          {" "}
-          Cadastrar Empresa{" "}
-        </Text>
+        >Cadastrar Empresa </Text>
       </TouchableOpacity>
     </View>
   );
@@ -115,24 +112,19 @@ export default function Login() {
 
 const styles = StyleSheet.create({
   button: {
-    padding: 20,
-    backgroundColor: "#985EFF",
+    padding: 15,
+    backgroundColor: "black",
     width: "80%",
     alignItems: "center",
-    elevation: 3,
     borderWidth: 1,
-    borderColor: "#985EFF",
     marginTop: 25,
     borderRadius: 10,
   },
   button2: {
     padding: 20,
-    backgroundColor: "#7F39FB",
+    backgroundColor: "white",
     width: "80%",
     alignItems: "center",
-    elevation: 1,
-    borderWidth: 1,
-    borderColor: "#7F39FB",
     marginTop: 25,
     borderRadius: 10,
   },
@@ -158,17 +150,15 @@ const styles = StyleSheet.create({
   input: {
     padding: 15,
     width: "80%",
-    backgroundColor: "#7F39FB",
-    borderColor: "#7F39FB",
+    backgroundColor: "white",
+    borderColor: "black",
     elevation: 5,
-    borderWidth: 1,
     marginTop: 5,
     borderRadius: 6,
-    color: "white",
   },
   container: {
     flex: 1,
-    backgroundColor: "#7F39FB",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },

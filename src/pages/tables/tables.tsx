@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { Component } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,69 +8,103 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useNavigation } from '@react-navigation/core';
 import { Feather } from "@expo/vector-icons";
+import  serviceTables  from "./tables.service";
 
-export default function Tables() {
-  const tables = [
-    { name: "01", value: 150, statusName: "Disponível", status: 0 },
-    { name: "02", value: 150, statusName: "Disponível", status: 0 },
-    { name: "03", value: 150, statusName: "Disponível", status: 0 },
-    { name: "04", value: 150, statusName: "Disponível", status: 0 },
-    { name: "05", value: 150, statusName: "Ocupada", status:1 },
-    { name: "06", value: 150, statusName: "Disponível", status: 0 },
-    { name: "07", value: 150, statusName: "Disponível", status: 0 },
-    { name: "08", value: 150, statusName: "Disponível", status: 0 },
-    { name: "09", value: 150, statusName: "Disponível", status: 0 },
-    { name: "10", value: 150, statusName: "Disponível", status: 0 },
-  ];
+export default class Tables extends Component {
+  props: any;
 
-  const navigation = useNavigation();
-
-  return ( 
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.tables}>
-          {tables.map((item, l) => (
-            <TouchableOpacity key={l} style={[styles.tableItem, item.status ? styles.tableItemOFF : styles.tableItem ]} onPress={ () => { openTable(); } }>
-              <Text style={styles.f1}> { item.statusName } </Text>
-              <Text style={{ color: "white", fontSize: 70 }}> { item.name } </Text>
-              <Text style={styles.f1}> R$ { item.value } </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
-
-            <View style={{width: '100%', padding: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'center'}}>
-
-            <TouchableOpacity style={styles.buttonADD } onPress={ () => { navigation.navigate('Adicionar mesa'); } }>
-                <Feather name="plus" size={26} color='white'/>
-                <Text style={{color: 'white', fontSize: 15}}>ADICIONAR MESA</Text>
-            </TouchableOpacity>
-
-            </View>
-
-    </View>
-  );
-
-  function openTable() {
-     navigation.navigate('Detalhes da mesa');
+  state = {
+    tables: [
+      {
+        name: "01",
+        itens: [],
+        value: 150,
+        statusName: "Disponível",
+        status: 0,
+      },
+    ],
+  };
+  
+  constructor(params: any) {
+    super(params);
+    this.props = params.params;
+   
   }
 
+  componentDidMount(){
+    console.log('#componentDidMount');
+    this.setState({
+      tables: serviceTables.getTablesArray,
+    });
+}
+
+  openTable(tableData: any) {
+    serviceTables.setTable(tableData);
+    this.props.navigation.navigate("Detalhes da mesa");
+  }
+  render() {
+    return (
+      <View style={styles.container}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={styles.tables}>
+            {this.state.tables.map((item, l) => (
+              <TouchableOpacity
+                key={l}
+                style={[
+                  styles.tableItem,
+                  item.status ? styles.tableItemOFF : styles.tableItem,
+                ]}
+                onPress={() => {
+                  this.openTable(item);
+                }}
+              >
+                <Text style={styles.f1}> {item.statusName} </Text>
+                <Text style={{ color: "white", fontSize: 70 }}>
+                  {" "}
+                  {item.name}{" "}
+                </Text>
+                <Text style={styles.f1}> R$ {item.value} </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+
+        <View
+          style={{
+            width: "100%",
+            padding: 10,
+            alignItems: "center",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+        >
+          <TouchableOpacity
+            style={styles.buttonADD}
+            onPress={() => {
+              this.props.navigation.navigate("Adicionar mesa");
+            }}
+          >
+            <Feather name="plus" size={26} color="white" />
+            <Text style={{ color: "white", fontSize: 15 }}>ADICIONAR MESA</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-
   buttonADD: {
-    backgroundColor: 'black',
+    backgroundColor: "black",
     height: 50,
-    width: '100%',
+    width: "100%",
     elevation: 3,
     borderRadius: 7,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
 
   tables: {
@@ -90,7 +123,7 @@ const styles = StyleSheet.create({
   },
 
   tableItem: {
-    width: 150,
+    width: 165,
     height: 150,
     backgroundColor: "#58DE65",
     elevation: 12,
@@ -100,7 +133,7 @@ const styles = StyleSheet.create({
   },
 
   tableItemOFF: {
-    width: 150,
+    width: 165,
     height: 150,
     backgroundColor: "#D91136",
     elevation: 12,

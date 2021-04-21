@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { Component, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,118 +9,134 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useNavigation } from "@react-navigation/core";
 import { Feather } from "@expo/vector-icons";
+import tablesService from "./../tables/tables.service";
+import serviceTables from "./../tables/tables.service";
+import Table from "./../tables/interfaceTable";
 
-export default function TableDetails(params: any) {
-  const navigation = params.navigation;
+export default class TableDetails extends Component {
+  navigation: any;
 
-  const tables = [
-    {
-      name: "01",
-      descricao: "Observação",
-    },
-    {
-      name: "02",
-      descricao: "Observação",
-    },
-    {
-      name: "03",
-      descricao: "Observação",
-    },
-    {
-      name: "04",
-      descricao: "Observação",
-    },
-    {
-      name: "06",
-      descricao: "Observação",
-    },
-    {
-      name: "07",
-      descricao: "Observação",
-    },
-    {
-      name: "08",
-      descricao: "Observação",
-    },
-    {
-      name: "09",
-      descricao: "Observação",
-    },
-    {
-      name: "10",
-      descricao: "Observação",
-    },
-  ];
-  return (
-    <View style={styles.container}>
-      <View style={styles.cont1}>
-        <Text style={styles.f1}>Mesa 1</Text>
-        <Text style={styles.f2}>Total: R$150,00</Text>
-      </View>
-      <View
-        style={{
-          height: 60,
-          padding: 10,
-          flexDirection: "row",
-          borderRadius: 30,
-        }}
-      >
-        <View style={{ width: "50%" }}>
-          <TouchableOpacity style={styles.button1}>
-            <Text style={{ color: "white", fontSize: 15 }} onPress={ ()=> { closeTable(); } }>Fechar Mesa</Text>
-          </TouchableOpacity>
-        </View>
+  table: Table;
 
-        <View style={{ width: "50%", marginLeft: 2 }}>
-          <TouchableOpacity
-            style={[styles.buttonADD, { backgroundColor: "red" }]}
-          >
-            <Text style={{ color: "white" }}>Remover Mesa</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <ScrollView style={styles.ScrollView}>
-        {tables.map((item, l) => (
-          <View key={l} style={[styles.tableItem]}>
-            <View style={{ width: 132, height: "100%" }}>
-              <Image
-                resizeMethod={"auto"}
-                style={styles.imgit}
-                source={require("./../../../assets/item.png")}
-              ></Image>
-            </View>
-            <View style={styles.areaDataItem}>
-              <Text style={styles.nameItem}>Nome do produto</Text>
-              <Text style={styles.descriptionItem}>{item.descricao} </Text>
-              <Text style={styles.priceItem}>R$10,00</Text>
-              <View style={{marginTop: 30}}>
-                <TouchableOpacity style={styles.btRem}>
-                  <Text style={{ color: "white", fontSize: 15 }}>
-                    <Feather name="trash-2" size={26} color="white" />
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        ))}
-      </ScrollView>
-      <View style={{ height: 70, elevation: 1, width: "100%", padding: 10 }}>
-        <TouchableOpacity style={styles.buttonADD}   onPress={ ()=>{  console.log(params); navigation.navigate('Catálogo'); } }>
-          <Text style={{ color: "white", fontSize: 15 }}>
-            Adicionar produto
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
-  function closeTable() {
-    navigation.navigate('Conta fechada');
+  constructor(props: any) {
+    super(props);
+    this.navigation = props.navigation;
+    this.table = tablesService.getTable();
+    
   }
 
+  componentDidMount() {
+    console.log("#TableDetails -> componentDidMount");
+  }
+
+  componentDidUpdate() {
+   console.log('haahahah');
+  }
+
+  // define a separate function to get triggered on focus
+  onFocusFunction() {
+    // do some stuff on every screen focus
+    console.log('TESTE')
+  }
+  
+
+  closeTable() {
+    this.navigation.navigate("Conta fechada");
+  }
+
+  addProduct() {
+    this.navigation.navigate("Catálogo", { addItem: true });
+  }
+
+  removeProductTable(item: any) {
+    tablesService.remmoveProduct(tablesService.getTable(), item);
+  }
+
+  
+  render() {
+    console.log('render');
+    return (
+      <View style={styles.container}>
+        <View style={styles.cont1}>
+          <Text style={styles.f1}>{this.table.name}</Text>
+          <Text style={styles.f2}>Total: R${this.table.value}</Text>
+        </View>
+        <View
+          style={{
+            height: 60,
+            padding: 10,
+            flexDirection: "row",
+            borderRadius: 30,
+          }}
+        >
+          <View style={{ width: "50%" }}>
+            <TouchableOpacity style={styles.button1}>
+              <Text
+                style={{ color: "white", fontSize: 15 }}
+                onPress={() => {
+                  this.closeTable();
+                }}
+              >
+                Fechar Mesa
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={{ width: "50%", marginLeft: 2 }}>
+            <TouchableOpacity
+              style={[styles.buttonADD, { backgroundColor: "red" }]}
+            >
+              <Text style={{ color: "white" }}>Remover Mesa</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <ScrollView style={styles.ScrollView}>
+          {this.table.itens.map((item, l) => (
+            <View key={l} style={[styles.tableItem]}>
+              <View style={{ width: 132, height: "100%" }}>
+                <Image
+                  resizeMethod={"auto"}
+                  style={styles.imgit}
+                  source={{ uri: item.imagem }}
+                ></Image>
+              </View>
+              <View style={styles.areaDataItem}>
+                <Text style={styles.nameItem}>{item.nome}</Text>
+                <Text style={styles.descriptionItem}>{item.descricao}</Text>
+                <Text style={styles.priceItem}>R${item.preco}</Text>
+                <View>
+                  <TouchableOpacity
+                    style={styles.btRem}
+                    onPress={() => {
+                      this.removeProductTable(item);
+                    }}
+                  >
+                    <Text style={{ color: "white", fontSize: 15 }}>
+                      <Feather name="trash-2" size={26} color="white" />
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          ))}
+        </ScrollView>
+        <View style={{ height: 70, elevation: 1, width: "100%", padding: 10 }}>
+          <TouchableOpacity
+            style={styles.buttonADD}
+            onPress={() => {
+              this.addProduct();
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 15 }}>
+              Adicionar produto
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -145,6 +161,7 @@ const styles = StyleSheet.create({
   descriptionItem: {
     fontSize: 12,
     color: "black",
+    height: 70,
   },
 
   areaDataItem: {
@@ -155,12 +172,12 @@ const styles = StyleSheet.create({
 
   imgit: {
     width: 132,
-    height: 162,
+    height: 178,
     backgroundColor: "red",
   },
 
   ScrollView: {
-    backgroundColor: "black",
+    backgroundColor: "#d1d1d2",
   },
 
   im: {
@@ -220,8 +237,8 @@ const styles = StyleSheet.create({
   },
   btRem: {
     backgroundColor: "red",
-    height: 50,
-    width: 50,
+    height: 38,
+    width: 38,
     elevation: 3,
     borderRadius: 7,
     justifyContent: "center",

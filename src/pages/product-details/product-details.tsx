@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { Component } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,100 +9,118 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useNavigation } from "@react-navigation/core";
 import { Feather } from "@expo/vector-icons";
+import tablesService from './../tables/tables.service'
 
-export default function ProductDetails() {
-  const navigation = useNavigation();
 
-  return (
-    <View style={styles.container}>
-      <Image
-        resizeMethod={"auto"}
-        style={styles.imgit}
-        source={require("./../../../assets/item.png")}
-      ></Image>
-      <View
-        style={{
-          width: "100%",
-          marginTop: 0,
-          height: 140,
-          
-          padding: 10
-        }}
-      >
+export default class ProductDetails extends Component {
+
+  product: any;
+  navigation: any;
+  
+
+  constructor(props: any) {
+    super(props);
+    this.navigation = props.navigation;
+    try {
+      this.product = props.route.params.product;
+    } catch (e) { console.warn('Error when trying to open product...!');  }
+    
+  }
+
+  addProduct(product: any) {
+    console.log(' ADd product to table');
+     tablesService.addProduct(tablesService.getTable(), product);
+     
+     this.navigation.navigate("Detalhes da mesa");
+  }
+  
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Image
+          resizeMethod={"auto"}
+          style={styles.imgit}
+          source={{uri: this.product.imagem}}
+        ></Image>
+        <View
+          style={{
+            width: "100%",
+            marginTop: 0,
+            height: 140,
+
+            padding: 10,
+          }}
+        >
           <ScrollView>
-        <View>
-          <Text style={styles.pname}>Nome do produto</Text>
-          <Text style={styles.pdesc}>
-            Pão, 2 Carnes artesanais (150g), Ovo, Bacon, 2x Queijo, Tomate,
-            Cebola, Alface e Molho especial da casa.{" "}
-          </Text>
+            <View>
+              <Text style={styles.pname}>{this.product.nome}</Text>
+              <Text style={styles.pdesc}>{this.product.descricao}</Text>
+            </View>
+          </ScrollView>
         </View>
-      </ScrollView>
-      </View>
-       
 
-      <View
-        style={{
-          width: "100%",
-          marginTop: 70,
-          height: 130,
-          
-        }}
-      >
-        <View style={styles.vi}>
-          <TextInput
-            placeholderTextColor="white"
-            style={styles.input}
-            placeholder={"R$10,00"}
-          />
+        <View
+          style={{
+            width: "100%",
+            marginTop: 70,
+            height: 130,
+          }}
+        >
+          <View style={styles.vi}>
+            <TextInput
+              placeholderTextColor="black"
+              style={styles.input}
+              placeholder={"R$10,00"}
+            />
+          </View>
+          <View style={styles.vi}>
+            <TextInput
+              placeholderTextColor="black"
+              style={styles.input}
+              placeholder={"Observação para o produto"}
+            />
+          </View>
         </View>
-        <View style={styles.vi}>
-          <TextInput
-            placeholderTextColor="white"
-            style={styles.input}
-            placeholder={"Observação para o produto"}
-          />
-        </View>
-      </View>
 
-      <View style={styles.cbts}>
-        <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-          <TouchableOpacity style={styles.buttonl} onPress={() => {}}>
-            <Feather name="plus" style={styles.iconbt} />
-          </TouchableOpacity>
+        <View style={styles.cbts}>
+          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+            <TouchableOpacity style={styles.buttonl} onPress={() => {}}>
+              <Feather name="plus" style={styles.iconbt} />
+            </TouchableOpacity>
 
-          <View style={[styles.button, { borderRadius: 0 }]}>
-            <Text style={{ fontSize: 25 }}> 1 </Text>
+            <View style={[styles.button, { borderRadius: 0 }]}>
+              <Text style={{ fontSize: 25, color: 'white' }}> 1 </Text>
+            </View>
+
+            <TouchableOpacity style={styles.buttonr} onPress={() => {}}>
+              <Feather style={styles.iconbt} name="plus" />
+            </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style={styles.buttonr} onPress={() => {}}>
-            <Feather style={styles.iconbt} name="plus" />
-          </TouchableOpacity>
-        </View>
-
-        <View>
-          <TouchableOpacity style={styles.buttonADD}>
-            <Text style={{ color: "black", fontSize: 15 }}>
-              Adicionar produto
-            </Text>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity style={styles.buttonADD} onPress={()=>{this.addProduct(this.product)}}>
+              <Text style={{ color: "white", fontSize: 15 }}>
+                Adicionar produto
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   pdesc: {
-      fontSize: 13,
-      color: 'gold',
+    fontSize: 13,
+    color: "black",
   },
 
   pname: {
     fontSize: 25,
-    color: 'white'
+    color: "black",
   },
 
   cbts: {
@@ -112,7 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonADD: {
-    backgroundColor: "gold",
+    backgroundColor: "black",
     width: 200,
     height: 55,
     elevation: 1,
@@ -123,40 +141,34 @@ const styles = StyleSheet.create({
   },
   iconbt: {
     fontSize: 12,
-    color: "black",
+    color: "white",
   },
   buttonl: {
     padding: 20,
-    backgroundColor: "gold",
+    backgroundColor: "red",
     width: 60,
     alignItems: "center",
     elevation: 3,
-    borderWidth: 1,
-    borderColor: "#985EFF",
     borderRadius: 10,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
   },
   buttonr: {
     padding: 20,
-    backgroundColor: "gold",
+    backgroundColor: "red",
     width: 60,
     alignItems: "center",
     elevation: 3,
-    borderWidth: 1,
-    borderColor: "#985EFF",
     borderRadius: 10,
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
   },
   button: {
     padding: 10,
-    backgroundColor: "gold",
+    backgroundColor: "red",
     width: 60,
     alignItems: "center",
     elevation: 3,
-    borderWidth: 1,
-    borderColor: "#985EFF",
     borderRadius: 10,
   },
   vi: {
@@ -166,13 +178,10 @@ const styles = StyleSheet.create({
   input: {
     padding: 15,
     width: "90%",
-    backgroundColor: "#7F39FB",
-    borderColor: "#7F39FB",
+    backgroundColor: "white",
     elevation: 5,
-    borderWidth: 1,
     marginTop: 5,
     borderRadius: 6,
-    color: "white",
   },
   imgit: {
     width: "100%",
@@ -181,7 +190,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#7F39FB",
+    backgroundColor: "white",
     alignItems: "center",
   },
 });

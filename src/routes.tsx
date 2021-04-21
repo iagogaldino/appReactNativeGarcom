@@ -8,6 +8,7 @@ import TableDetails from "./pages/tableDetails/table-datails";
 import MenuItens from "./pages/menu-itens/menu-itens";
 import AddTable from "./pages/add-table/add-table";
 import MessageTableFinished from "./pages/message-table-finished/message-table-finished";
+import ProductDetails from "./pages/product-details/product-details";
 import React from "react";
 
 
@@ -41,6 +42,7 @@ export default function StackNavigator() {
         <Stack.Screen name="Catálogo" component={MenuItens} />
         <Stack.Screen name="Adicionar mesa" component={AddTable} />
         <Stack.Screen name="Conta fechada" component={MessageTableFinished} />
+        <Stack.Screen name="Produto" component={ProductDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

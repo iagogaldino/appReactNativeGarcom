@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { Component } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,21 +9,45 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import TablesS from "./../tables/tables.service";
 
-export default function AddTable() {
+export default class AddTable extends Component{
 
-  return (
+  props: any;
+  tableName = '';
+  
+  constructor(props: any) {
+    super(props);
+  }
+
+  onClickADDTable() {
+  const resp = TablesS.addTablesArray(this.tableName, 0, 'Disponível', 0)
+
+   console.log('resp', resp)
+   if (resp) {
+      this.props.navigation.navigate("Mesas");
+   } else {} 
+  }
+
+  setNameTValue(value: string) {
+    this.tableName = value;
+  }
+
+ 
+
+  render() { return(
     <View style={styles.container}>
        <View style={styles.vi}>
-          <TextInput placeholderTextColor = "black" style={styles.input} placeholder={"Nome da mesa"} />
+          <TextInput onChangeText={text => this.setNameTValue(text)} placeholderTextColor = "black" style={styles.input} placeholder={"Nome da mesa"} />
         </View>
 
-        <TouchableOpacity style={styles.button}>
-        <Text style={{ color: 'white', fontSize: 18 }}> Adicionar </Text>
+        <TouchableOpacity style={styles.button} onPress={()=>{ this.onClickADDTable(); }}>
+        <Text style={{ color: 'white', fontSize: 18 }}>Adicionar</Text>
       </TouchableOpacity> 
-    </View>
-  );
+    </View>);
+  };
 }
+
 
 const styles = StyleSheet.create({
     vi: {
