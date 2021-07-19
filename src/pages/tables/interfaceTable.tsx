@@ -1,0 +1,61 @@
+export default interface Table {
+  omissao: 0;
+  id_pedido: 0;
+  comprovante: "";
+  coordenada_cliente?: ["", ""];
+  cupom?: "";
+  dadoscliente: { nome: ""; telefone: "" };
+  nome: string;
+  telefone?: "";
+  dadosempresa?: { id: 24; imagem: ""; nome: ""; telefone: "" };
+  data_pagamento?: "";
+  desconto?: 0;
+  detalhes?: "";
+  endereco?: {
+    rua: "";
+    numero: "";
+    complemento: "";
+    bairro: { id: ""; nome: "" };
+    cidade: { id: ""; nome: "" };
+    estado: "";
+    pais: "Brasil";
+    latitude: "";
+    longetude: "";
+    tiporesidencia: "";
+  };
+  formapagamento?: "limpo";
+  formaspagamento?: "";
+  horario?: "";
+  id?: 0;
+  id_cliente?: 0;
+  id_cupom?: 0;
+  id_empresa: number;
+  info?: "";
+  item_pagamento?: "";
+  itens: Array<any>;
+  latitude?: "";
+  longetude?: "";
+  motoboy?: { nome?: "Entregador não identificado"; imagem?: "image.png" };
+  origem?: "";
+  origem_cliente?: "";
+  porcentagem_cartao?: 0;
+  status_alt_entrega?: 0;
+  status_consolidacao_cartao?: "0";
+  status_entrega?: 0;
+  status_motoboy?: "0";
+  status_motoboy_texto?: "";
+  status_pedido?: number;
+  status_texto?: "";
+  statustexto?: 0;
+  subtotal: 0;
+  taxa_motoboy?: 0;
+  taxaentrega?: 0;
+  taxaextra?: 0;
+  tipopedido?: 0;
+  total: 0;
+  troco?: 0;
+  valor_conciliado?: "0";
+  valor_devedor?: "0";
+  itensTABLE?: Array<any>,
+  operador: any
+}
