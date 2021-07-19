@@ -24,7 +24,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "juadelivery.gerentemesa.com.br"
+      "package": "juadelivery.gerentemesa.com.br",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
