@@ -149,10 +149,6 @@ export default class MenuItensClass extends Component {
           </TouchableOpacity>
         ))}
 
-        <TouchableOpacity style={{ borderRadius: 7, marginBottom: 20, marginTop: 20, backgroundColor: 'white', marginLeft: 20, marginRight: 20, padding: 10, borderWidth: 1, borderColor: '#d3d3d3' }} onPress={() => { this.consultaCardapio() }}>
-          <Text style={{ textAlign: 'center', color: '#d3d3d3' }}>Atualizar cardápio</Text>
-        </TouchableOpacity>
-
       </ScrollView>
 
     );
@@ -210,10 +206,9 @@ export default class MenuItensClass extends Component {
 
   openItemDetails(item: any) {
     if (!this.addItem) {
-      console.log("just see menu...");
+      this.navigation.navigate("Configurar produto", { addItem: false, product: item });
       return;
     }
-    console.log("Open details product...");
     this.navigation.navigate("Produto", { addItem: true, product: item });
   }
 
@@ -222,6 +217,21 @@ export default class MenuItensClass extends Component {
 
       <View style={{ width: "100%", flex: 1 }}>
         {this.progress()}
+
+
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity style={{ borderRadius: 7, marginTop: 10, backgroundColor: 'white', marginLeft: 10, marginRight: 10, padding: 10, borderWidth: 1, borderColor: '#d3d3d3', marginBottom: 10 }} onPress={() => { this.consultaCardapio() }}>
+            <Text style={{ textAlign: 'center', color: '#d3d3d3' }}>Nova categoria</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ borderRadius: 7, marginTop: 10, backgroundColor: 'white', marginLeft: 10, marginRight: 10, padding: 10, borderWidth: 1, borderColor: '#d3d3d3', marginBottom: 10 }} onPress={() => { this.navigation.navigate('Configurar produto'); }}>
+            <Text style={{ textAlign: 'center', color: '#d3d3d3' }}>Novo produto</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ borderRadius: 7, marginTop: 10, backgroundColor: 'white', marginLeft: 10, marginRight: 10, padding: 10, borderWidth: 1, borderColor: '#d3d3d3', marginBottom: 10 }} onPress={() => { this.consultaCardapio() }}>
+            <Text style={{ textAlign: 'center', color: '#d3d3d3' }}>Atualizar lista</Text>
+          </TouchableOpacity>
+        </View>
 
         {this.catsList()}
         {this.itens()}
@@ -237,10 +247,6 @@ export default class MenuItensClass extends Component {
           <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Nenhum produto ativo.</Text>
           <Text style={{ textAlign: 'center' }}>Para configurar os produtos acesse o dashboard da empresa.</Text>
           <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Clique aqui para acessar</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={{ borderRadius: 7, marginTop: 20, backgroundColor: 'white', marginLeft: 20, marginRight: 20, padding: 10, borderWidth: 1, borderColor: '#d3d3d3' }} onPress={() => { this.consultaCardapio() }}>
-          <Text style={{ textAlign: 'center', color: '#d3d3d3' }}>Atualizar cardápio</Text>
         </TouchableOpacity>
       </>
     )

@@ -15,6 +15,7 @@ import { StatusBar } from "expo-status-bar";
 import { Button, View, Text, TouchableOpacity } from "react-native";
 import orderApp from "./service/order";
 import { CoresApp } from "./pages/componentes/cores";
+import AddItem from "./pages/add-item/addItem";
 
 
 export default class StackNavigator extends Component {
@@ -42,7 +43,7 @@ export default class StackNavigator extends Component {
     return (
       <NavigationContainer theme={this.MyTheme}>
         <StatusBar backgroundColor="white"></StatusBar>
-        <this.Stack.Navigator initialRouteName="Login" screenOptions={{
+        <this.Stack.Navigator initialRouteName="Adicionar produto" screenOptions={{
           gestureEnabled: false,
           gestureDirection: 'horizontal',
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
@@ -61,6 +62,7 @@ export default class StackNavigator extends Component {
           <this.Stack.Screen name="Adicionar mesa" component={AddTable} />
           <this.Stack.Screen name="Produto" component={ProductDetails} />
           <this.Stack.Screen name="Forma de pagamento" component={FormasPagamento} />
+          <this.Stack.Screen name="Configurar produto" component={AddItem} />
 
         </this.Stack.Navigator>
 

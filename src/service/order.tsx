@@ -4,8 +4,8 @@ import api from "./api";
 let appState = {
   token: '',
   idEmpresa: 0,
-  dadosEmpresa: {nome: '', telefone: '', formaspagamento: [], imagem: '', operador: {nome: ''}},
-  cardapio: [{itens: []}],
+  dadosEmpresa: { nome: '', telefone: '', formaspagamento: [], imagem: '', operador: { nome: '' } },
+  cardapio: [{ itens: [] }],
   statusConsultaCardapio: false,
   statusMesasCarregadas: false,
   qntProdutosEmpresa: 0
@@ -59,6 +59,50 @@ let order_ = {
   itensTABLE: [],
 };
 
+const addProd = (dadosItem: { id: number, nome: string, descricao: string, preco: number }, categorias: Array<any>, cb: Function) => {
+  let paramsSender = {
+    "token": appState.token,
+    "acao": "add_item_cardapio",
+    "obj[id]": dadosItem.id,
+    "obj[nome]": dadosItem.nome,
+    "obj[descricao]": dadosItem.descricao,
+    "obj[esconder]": false,
+    "obj[esgotado]": false,
+    "obj[itemEstoqueRelacionado]": false,
+    "obj[statusEstoqueRelacionado]": false,
+    "obj[preco]": dadosItem.preco,
+    "obj[id_empresa]": orderApp.getIDEmpresa(),
+    "obj[id_categoria]": categorias[0],
+    "obj[imagem]": ""
+  }
+
+  let arrayItens: any = {};
+  let key = 0;
+
+  categorias.forEach((item: any) => {
+    arrayItens['obj[categoria][' + key + '][id]'] = item.id;
+    arrayItens['obj[categoria][' + key + '][nome]'] = item.nome;
+    arrayItens['obj[categoria][' + key + '][descricao]'] = item.observacao;
+    arrayItens['obj[categoria][' + key + '][status]'] = true;
+    key++;
+  });
+
+
+  Object.assign(paramsSender, arrayItens);
+  console.log(paramsSender)
+
+  const response: any = api.post('?api=apiEstabelecimento', null, { params: paramsSender }).then((response) => {
+
+    const responseJSON = JSON.parse(
+      JSON.stringify(response.data)
+    );
+
+    if (cb) {
+      cb(response.data);
+    } else { console.log('Nenhuma funcao callback definida'); }
+  });
+  
+}
 
 const sendOrder = (cb?: Function) => {
   let paramsSender = {
@@ -148,8 +192,8 @@ const adicionarProdutoPedido = (success: any, parametros: any) => {
     }
   ).then((response) => {
 
-    if (success) { 
-      success(response.data); 
+    if (success) {
+      success(response.data);
     }
 
   });
@@ -172,8 +216,8 @@ const attStatusMesa = (success: any, idMesa: any, status: number, idEmpresa: num
     }
   ).then((response) => {
 
-    if (success) { 
-      success(response.data); 
+    if (success) {
+      success(response.data);
     }
 
   });
@@ -216,7 +260,7 @@ const consultaTodosPedidos = (success: any, datainicio: string, datafim: string)
     }
   });
 }
- 
+
 
 const ADDFp = (success: any, params: Object) => {
   const response: any = api.post('?api=apiEstabelecimento', params, {
@@ -332,6 +376,7 @@ const orderApp = {
   login: Login,
   navigation: navigation,
   nomeEmpresa: nomeEmpresa,
-}  
- 
+  addProd: addProd,
+}
+
 export default orderApp;

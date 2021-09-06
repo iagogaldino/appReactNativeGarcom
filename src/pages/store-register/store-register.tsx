@@ -31,16 +31,16 @@ export default class StoreRegister extends Component {
 
         <View style={{flex: 1, alignItems: 'center'}}>
           <View style={{ padding: 30,  }}>
-            <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold' }}>Cadastre-se e comece a trabalhar</Text>
-            <Text style={{ marginTop: 10, color: 'white' }}>1º Faça o cadastro de sua empresa clicando no botão Cadastrar minha empresa</Text>
-            <Text style={{ marginTop: 10, color: 'white' }}>2º Configure a forma de funcionamento de sua empresa</Text>
-            <Text style={{ marginTop: 10, color: 'white' }}>3º Adicione as categorias e os produtos de acordo com o seu catálogo</Text>
-            <Text style={{ marginTop: 20, color: 'white' }}>Para tirar duvidas você pode entrar em contato conosco <Text style={{fontWeight: 'bold'}}>(74)988420307</Text> </Text>
+            <Text style={{ fontSize: 20, color: 'white', fontWeight: 'bold', textAlign: 'center' }}>Para usar o aplicativo sua empresa deve estar cadastrada</Text>
+          </View>
+
+          <View style={{ height: 50, width: 300 }}>
+            <BotaoDelsuc label="Entrar em contato" onPress={() => { Linking.openURL('whatsapp://send?phone=5574988420307&text=Olá, gostaria de falar sobre o aplicativo gerente de mesas.'); }}></BotaoDelsuc>
           </View>
 
 
-          <View style={{ height: 50, width: 300 }}>
-            <BotaoDelsuc label="Cadastrar minha empresa" onPress={() => { Linking.openURL('https://admin.juadelivery.site/login'); }}></BotaoDelsuc>
+          <View style={{ height: 50, width: 300, marginTop: 20 }}>
+            <BotaoDelsuc label="Cadastrar empresa" onPress={() => { Linking.openURL('https://admin.juadelivery.site/login'); }}></BotaoDelsuc>
           </View>
         </View>
 

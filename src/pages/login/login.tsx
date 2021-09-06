@@ -15,6 +15,7 @@ import api from "./../../service/api";
 import orderApp from "../../service/order";
 import { BotaoDelsuc } from "../componentes/botao";
 import { Textos } from "../componentes/TextosApp";
+import { CoresApp } from "../componentes/cores";
 
 export default class Login extends Component {
   navigation: any;
@@ -35,10 +36,15 @@ export default class Login extends Component {
 
   
 
-  singnIn() {
+  singnIn(email?: string, senha?:string) {
 
     console.log("press signin!");
     this.setState({ statusLoader: true });
+
+    if (email && senha) {
+      this.email = email;
+      this.senha = senha;
+    }
 
     orderApp.login((response: any) => {
       try {
@@ -112,6 +118,13 @@ export default class Login extends Component {
 
 
 
+            <View style={{ alignItems: 'center', marginTop: 20 }}>
+              <Text style={{ color: "#c4c4c4", fontSize: 13, textAlign: 'center' }}>Você também pode fazer um teste clicando no botão abaixo</Text>
+              <TouchableOpacity style={{marginTop: 10, borderColor: CoresApp.paleta01, borderWidth: 1, padding: 10, borderRadius: 10, }} onPress={() => { this.singnIn("e@hotmail.com", "123"); }}>
+                <Text style={{ color: CoresApp.paleta01, fontSize: 15 }}>Testar aplicativo</Text>
+              </TouchableOpacity>
+            </View>
+
             <View style={{ alignItems: 'center' }}>
               <TouchableOpacity style={styles.button2} onPress={() => { this.navigation.navigate("Cadastro de empresa", {}); }}>
                 <Text style={{ color: "black", fontSize: 15 }}>{Textos.BOTAO_01}</Text>
@@ -166,7 +179,7 @@ const styles = StyleSheet.create({
   vi2: {
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 70,
+    marginBottom: 30,
   },
   im: {
     width: 150,
