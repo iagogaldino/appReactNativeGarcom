@@ -21,6 +21,7 @@
     "react-native-feather": "^1.1.2",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-progress-circle": "^2.1.0",
+    "react-native-screens": "~3.4.0",
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
@@ -29,5 +30,8 @@
     "@types/react-native": "~0.63.2",
     "typescript": "~4.0.0"
   },
-  "private": true
+  "private": true,
+  "optionalDependencies": {
+    "fsevents": "^2.3.2"
+  }
 }

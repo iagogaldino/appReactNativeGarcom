@@ -36,7 +36,7 @@ export default class AddTable extends Component {
       statubBt: true,
     });
 
-    let resp = TablesS.addTablesArray('Mesa: ' + this.tableName, 0, "Disponível", 0, (response: any) => {
+    let resp = TablesS.addTablesArray('Mesa: ' + this.tableName, 1, "Disponível", 0, (response: any) => {
       if (response.erro === true) {
         this.setState({
           statubBt: false,
@@ -80,7 +80,6 @@ export default class AddTable extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{textAlign: 'center', marginTop: 10, color: CoresApp.paleta01}}>Após a mesa adicionada, a mesma deve ser aceita no dashboard para que você possa adicionar outra.</Text>
         <View style={styles.vi}>
           <TextInput
             onChangeText={(text) => this.setNameTValue(text)}

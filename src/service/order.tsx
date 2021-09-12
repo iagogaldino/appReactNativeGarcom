@@ -59,10 +59,108 @@ let order_ = {
   itensTABLE: [],
 };
 
-const addProd = (dadosItem: { id: number, nome: string, descricao: string, preco: number }, categorias: Array<any>, cb: Function) => {
+const consultaCEP = (cep: any, cb: Function) => {
+  const response: any = api.post('?api=apiEstabelecimento&acao=getCEP', null, {
+   params: {"obj": cep}
+  }).then((response) => {
+
+    const responseJSON = JSON.parse(
+      JSON.stringify(response.data)
+    );
+
+    if (cb) {
+      cb(response.data);
+    } else { console.log('Nenhuma funcao callback definida'); }
+  });
+}
+
+const serviceCat = (dados: any, acaoMenu: any, cb: Function) => {
+   
+  let paramsSender = {
+    "obj[id]": dados.id,
+    "obj[nome]": dados.nome,
+    acmenu: acaoMenu,
+  }
+
+  const response: any = api.post('?api=apiEstabelecimento&acao=cardapio', null, { params: paramsSender }).then((response) => {
+
+    const responseJSON = JSON.parse(
+      JSON.stringify(response.data)
+    );
+    console.log('serviceCat')
+    console.log(dados, acaoMenu)
+    if (cb) {
+      cb(response.data);
+    } else { console.log('Nenhuma funcao callback definida'); }
+  });
+
+
+}
+
+const cadastroEmpresa = (email: any, telefone: any, cep: any, senha: any, nome: any, rua: any, numero: any, emailC: any, senhaC: any,
+  bairro: any, cidade: any, nomepessoal: any, uf: any, cb: Function) => {
+  let paramsSender = {
+    "obj[email]": email,
+    "obj[telefone]": telefone,
+    "obj[cep]": cep,
+    "obj[senha]": senha,
+    "obj[nome]": nome,
+    "obj[cnpj]": telefone,
+    "obj[rua]": rua,
+    "obj[numero]": numero,
+    "obj[emailconfirmar]": emailC,
+    "obj[senhaconfirmar]": senhaC,
+    "obj[bairro]": bairro,
+    "obj[cidade]": cidade,
+    "obj[cidade_id]": 0,
+    "obj[nomep]": nomepessoal,
+    "obj[telefonep]": telefone,
+    "obj[uf]": uf
+  }
+
+  const response: any = api.post('?api=apiEstabelecimento&acao=cadastro_empresa', null, { params: paramsSender }).then((response) => {
+
+    const responseJSON = JSON.parse(
+      JSON.stringify(response.data)
+    );
+
+    if (cb) {
+      cb(response.data);
+    } else { console.log('Nenhuma funcao callback definida'); }
+  });
+
+
+}
+
+const removerProduto = (id: any, cb: Function) => {
   let paramsSender = {
     "token": appState.token,
-    "acao": "add_item_cardapio",
+    "acao": "cardapio",
+    "acmenu": "removerItem",
+    "obj": id,
+  }
+
+  const response: any = api.post('?api=apiEstabelecimento', null, { params: paramsSender }).then((response) => {
+
+    const responseJSON = JSON.parse(
+      JSON.stringify(response.data)
+    );
+
+    if (cb) {
+      cb(response.data);
+    } else { console.log('Nenhuma funcao callback definida'); }
+  });
+
+}
+
+const addProd = (dadosItem: any, categorias: Array<any>, cb: Function, acao: string) => {
+  if (!categorias[0]) {
+    cb({ erro: true, mensagem: 'Selecione a categoria deste item' });
+    return;
+  }
+  let paramsSender = {
+    "token": appState.token,
+    "acao": acao,//add_item_cardapio / att_item_cardapio
     "obj[id]": dadosItem.id,
     "obj[nome]": dadosItem.nome,
     "obj[descricao]": dadosItem.descricao,
@@ -72,8 +170,17 @@ const addProd = (dadosItem: { id: number, nome: string, descricao: string, preco
     "obj[statusEstoqueRelacionado]": false,
     "obj[preco]": dadosItem.preco,
     "obj[id_empresa]": orderApp.getIDEmpresa(),
-    "obj[id_categoria]": categorias[0],
-    "obj[imagem]": ""
+    "obj[id_categoria]": categorias[0].id,
+    "obj[disponibilidade]": dadosItem.disponibilidade,
+    "obj[categoriaadicional]": dadosItem.categoriaadicional,
+    "obj[status_promocao]": dadosItem.status_promocao,
+    "obj[desconto]": dadosItem.desconto,
+    "obj[estoque_mim]": dadosItem.estoque_mim,
+    "obj[estoque_med]": dadosItem.estoque_med,
+    "obj[un_caixa]": dadosItem.un_caixa,
+    "obj[quantidade_retira]": dadosItem.quantidade_retira,
+    "obj[un_caixa_pacote]": dadosItem.un_caixa_pacote,
+
   }
 
   let arrayItens: any = {};
@@ -89,9 +196,8 @@ const addProd = (dadosItem: { id: number, nome: string, descricao: string, preco
 
 
   Object.assign(paramsSender, arrayItens);
-  console.log(paramsSender)
 
-  const response: any = api.post('?api=apiEstabelecimento', null, { params: paramsSender }).then((response) => {
+  const response: any = api.post('?api=apiEstabelecimento&obj%5Bimagem%5D%3A%20=' + dadosItem.imagem, null, { params: paramsSender }).then((response) => {
 
     const responseJSON = JSON.parse(
       JSON.stringify(response.data)
@@ -99,9 +205,10 @@ const addProd = (dadosItem: { id: number, nome: string, descricao: string, preco
 
     if (cb) {
       cb(response.data);
+      console.log(dadosItem.imagem)
     } else { console.log('Nenhuma funcao callback definida'); }
   });
-  
+
 }
 
 const sendOrder = (cb?: Function) => {
@@ -377,6 +484,11 @@ const orderApp = {
   navigation: navigation,
   nomeEmpresa: nomeEmpresa,
   addProd: addProd,
+  removerProduto: removerProduto,
+  consultaCEP: consultaCEP,
+  cadastroEmpresa: cadastroEmpresa,
+  serviceCat: serviceCat,
+   
 }
 
 export default orderApp;

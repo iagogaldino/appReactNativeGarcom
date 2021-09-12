@@ -169,12 +169,17 @@ export default class FormasPagamento extends Component {
                     ))}
 
                     <View style={styles.cont01}></View>
-                    <View style={{ height: 60, padding: 5 }}>
-                        <BotaoDelsuc label="Finalizar mesa" onPress={() => { this.adicionarTaxas(); }}></BotaoDelsuc>
-                    </View>
+                    {this.botao()}
                 </View>
             </ScrollView>
         );
+    }
+
+    botao() {
+      
+        return <View style={{ height: 60, padding: 5 }}>
+            <BotaoDelsuc label="Finalizar mesa" mostrarBotao={this.state.statusLoader} onPress={() => { this.adicionarTaxas(); }}></BotaoDelsuc>
+        </View>
     }
 
     setNameTValue(valor: any) {
@@ -221,6 +226,7 @@ export default class FormasPagamento extends Component {
 
         if (this.state.statusLoader) { return alert('Processando...'); }
         this.state.statusLoader = true;
+        this.setState({statusLoader: true})
 
         const params = {
             "idPedido": this.state.dadosMesa.id,
@@ -233,6 +239,7 @@ export default class FormasPagamento extends Component {
                 if (resposta.erro) {
                     alert(resposta.detalhes);
                     this.state.statusLoader = false;
+                    this.setState({statusLoader: false})
                 } else {
 
                     this.confirmar();
@@ -253,6 +260,8 @@ export default class FormasPagamento extends Component {
             if (resposta.erro) {
                 alert(resposta.detalhes);
                 this.state.statusLoader = false;
+                this.setState({statusLoader: false})
+
             } else {
 
                 this.attStatusMesa(5);
@@ -272,6 +281,7 @@ export default class FormasPagamento extends Component {
             } else {
                 alert(resposta.detalhes);
                 this.state.statusLoader = false;
+                this.setState({statusLoader: false})
             }
 
         };

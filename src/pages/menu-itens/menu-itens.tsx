@@ -69,6 +69,7 @@ export default class MenuItensClass extends Component {
 
 
         response.catalogo.forEach((categoria: any) => {
+          if (categoria.itens)
           categoria.itens.forEach((element: any) => {
             orderApp.appState.qntProdutosEmpresa++;
           });
@@ -85,9 +86,9 @@ export default class MenuItensClass extends Component {
           orderApp.appState.statusConsultaCardapio = true;
         }
 
-      } catch (e) {
+      } catch (e: any) {
 
-        console.log('ERRO');
+        console.log('ERRO', e);
         orderApp.appState.cardapio = [];
         orderApp.appState.statusConsultaCardapio = false;
         orderApp.appState.qntProdutosEmpresa = 0;
@@ -183,6 +184,10 @@ export default class MenuItensClass extends Component {
               key={l}
               style={[styles.itemCat, this.checaSelecionadoCat(item.selecionado)]}
               onPress={() => { this.onclickCat(item); }}
+              onLongPress={()=>{
+                console.log('Editar categoria');
+                this.navigation.navigate('Categoria catálogo', { addItem: false, categoria: item })
+              }}
             >
               <View
                 style={{
@@ -220,11 +225,17 @@ export default class MenuItensClass extends Component {
 
 
         <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity style={{ borderRadius: 7, marginTop: 10, backgroundColor: 'white', marginLeft: 10, marginRight: 10, padding: 10, borderWidth: 1, borderColor: '#d3d3d3', marginBottom: 10 }} onPress={() => { this.consultaCardapio() }}>
+          <TouchableOpacity style={{ borderRadius: 7, marginTop: 10, backgroundColor: 'white', marginLeft: 10, marginRight: 10, padding: 10, borderWidth: 1, borderColor: '#d3d3d3', marginBottom: 10 }} onPress={() => {
+             this.navigation.navigate("Categoria catálogo", { addItem: true, product: {} });
+             }}>
             <Text style={{ textAlign: 'center', color: '#d3d3d3' }}>Nova categoria</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ borderRadius: 7, marginTop: 10, backgroundColor: 'white', marginLeft: 10, marginRight: 10, padding: 10, borderWidth: 1, borderColor: '#d3d3d3', marginBottom: 10 }} onPress={() => { this.navigation.navigate('Configurar produto'); }}>
+          <TouchableOpacity style={{ borderRadius: 7, marginTop: 10, backgroundColor: 'white', marginLeft: 10, marginRight: 10, padding: 10, borderWidth: 1, borderColor: '#d3d3d3', marginBottom: 10 }} 
+          onPress={() => { 
+            if (!this.state.cats.length) { alert('Adicione uma categoria'); return;}
+            this.navigation.navigate("Configurar produto", { addItem: true, product: {} }); 
+            }}>
             <Text style={{ textAlign: 'center', color: '#d3d3d3' }}>Novo produto</Text>
           </TouchableOpacity>
 
@@ -243,10 +254,9 @@ export default class MenuItensClass extends Component {
   telaAviso() {
     return (
       <>
-        <TouchableOpacity style={{ borderRadius: 7, marginTop: 5, backgroundColor: 'gold', marginLeft: 20, marginRight: 20, padding: 20 }} onPress={() => { Linking.openURL('https://admin.juadelivery.site/login'); }}>
-          <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Nenhum produto ativo.</Text>
-          <Text style={{ textAlign: 'center' }}>Para configurar os produtos acesse o dashboard da empresa.</Text>
-          <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Clique aqui para acessar</Text>
+        <TouchableOpacity style={{ borderRadius: 7, marginTop: 5, backgroundColor: 'gold', marginLeft: 20, marginRight: 20, padding: 20 }} >
+          <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Nenhum produto adicionado.</Text>
+          <Text style={{ textAlign: 'center' }}>Antes de adicionar produtos, pelo menos uma categoria deve ser adicionada antes.</Text>
         </TouchableOpacity>
       </>
     )

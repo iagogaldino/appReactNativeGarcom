@@ -16,6 +16,7 @@ import { Button, View, Text, TouchableOpacity } from "react-native";
 import orderApp from "./service/order";
 import { CoresApp } from "./pages/componentes/cores";
 import AddItem from "./pages/add-item/addItem";
+import Addcat from "./pages/addCat/addCat";
 
 
 export default class StackNavigator extends Component {
@@ -63,7 +64,8 @@ export default class StackNavigator extends Component {
           <this.Stack.Screen name="Produto" component={ProductDetails} />
           <this.Stack.Screen name="Forma de pagamento" component={FormasPagamento} />
           <this.Stack.Screen name="Configurar produto" component={AddItem} />
-
+          <this.Stack.Screen name="Categoria catálogo" component={Addcat} />
+           
         </this.Stack.Navigator>
 
 

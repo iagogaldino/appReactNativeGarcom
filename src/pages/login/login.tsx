@@ -97,6 +97,7 @@ export default class Login extends Component {
                 placeholderTextColor="black"
                 style={styles.input}
                 placeholder={"Email"}
+                autoCapitalize='none'
                 onChangeText={(text) => this.setEmail(text)}
                 keyboardType={"email-address"}
               />
@@ -109,6 +110,7 @@ export default class Login extends Component {
                 onChangeText={(text) => this.setSenha(text)}
                 textContentType="password"
                 secureTextEntry={true}
+                autoCapitalize='none'
               />
             </View>
 
@@ -118,12 +120,12 @@ export default class Login extends Component {
 
 
 
-            <View style={{ alignItems: 'center', marginTop: 20 }}>
+            {/* <View style={{ alignItems: 'center', marginTop: 20 }}>
               <Text style={{ color: "#c4c4c4", fontSize: 13, textAlign: 'center' }}>Você também pode fazer um teste clicando no botão abaixo</Text>
-              <TouchableOpacity style={{marginTop: 10, borderColor: CoresApp.paleta01, borderWidth: 1, padding: 10, borderRadius: 10, }} onPress={() => { this.singnIn("e@hotmail.com", "123"); }}>
+              <TouchableOpacity style={{marginTop: 10, borderColor: CoresApp.paleta01, borderWidth: 1, padding: 10, borderRadius: 10, }} onPress={() => { this.singnIn("f@email.com", "123"); }}>
                 <Text style={{ color: CoresApp.paleta01, fontSize: 15 }}>Testar aplicativo</Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
 
             <View style={{ alignItems: 'center' }}>
               <TouchableOpacity style={styles.button2} onPress={() => { this.navigation.navigate("Cadastro de empresa", {}); }}>
