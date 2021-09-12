@@ -30,7 +30,7 @@ export default class Addcat extends Component {
         this.acao = props.route.params.addItem; // Se true = ADD item
 
         if (!this.acao) {
-            this.acaoMenu = 'removerCategoria';
+            this.acaoMenu = 'editarCat';
             this.categoria = props.route.params.categoria; // Se true = ADD item
         }
         console.log(this.categoria)
